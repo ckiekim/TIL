@@ -3,6 +3,7 @@
 workspace.xml
 *.db
 model/
+gu_data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
