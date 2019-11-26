@@ -5,6 +5,7 @@ workspace.xml
 model/
 graph/
 gu_data/
+dogs-vs-cats/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
