@@ -6,6 +6,8 @@ model/
 graph/
 gu_data/
 dogs-vs-cats/
+MNIST_data/
+PyTorch-master/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
