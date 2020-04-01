@@ -8,6 +8,7 @@ gu_data/
 dogs-vs-cats/
 MNIST_data/
 PyTorch-master/
+cifar10/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
