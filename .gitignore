@@ -9,6 +9,9 @@ dogs-vs-cats/
 MNIST_data/
 PyTorch-master/
 cifar10/
+darknet-master/
+keras_yolo3/
+ssd_keras-master/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
