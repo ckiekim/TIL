@@ -12,6 +12,11 @@ cifar10/
 darknet-master/
 keras_yolo3/
 ssd_keras-master/
+samples/
+edges2portrait_gan-master/
+MUNIT-Tensorflow-master/
+pytorch-tutorial-master/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
