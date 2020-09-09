@@ -2,16 +2,19 @@ const ut = require('./util');
 
 module.exports = {
     printBoardObj:  function(boardObj) {
+        let count = 0;
         for (let rowObj of boardObj) {
             let str = '';
             for (let cellObj of rowObj) {
-                str += cellObj.value + ' ';
+                str += ' ' + cellObj.value;
+                if (cellObj.value == 0)
+                    count++;
             }
             console.log(str);
         }
-        console.log();
+        console.log(count);
     },
-    printForbidden:     function(boardObj) {
+    printForbidden: function(boardObj) {
         for (let rowObj of boardObj) {
             for (let cellObj of rowObj) {
                 if (cellObj.value == 0)
@@ -21,13 +24,33 @@ module.exports = {
         }
         console.log();
     },
+    printAvail: function(boardObj) {
+        for (let rowObj of boardObj) {
+            for (let cellObj of rowObj) {
+                if (cellObj.value == 0)
+                    console.log(cellObj.row, cellObj.col, ':', cellObj.avail);
+            }
+            console.log();
+        }
+        console.log();
+    },
+    /* transposeObj:      function (boardObj) {
+        let t = [];
+        for(let i=0; i<9; i++) {
+            t[i] = [];
+            for(let k=0; k<9; k++) {
+                t[i][k] = boardObj[k][i];
+            }
+        }
+        return t;
+    }, */
 
     makeBoardObj:    function(board) {
         let boardObj = [];
         for (let i=0; i<9; i++) {
             let row = [];
             for (let k=0; k<9; k++) {
-                let cellObj = {row: i, col: k, value: board[i][k], forbidden: []};
+                let cellObj = {row: i, col: k, value: board[i][k], forbidden: [], avail: []};
                 row.push(cellObj);
             }
             boardObj.push(row)
@@ -75,12 +98,25 @@ module.exports = {
                     if (numbers.length == 8) {
                         boardObj[i][k].value = ut.findOneNumber(numbers);
                         boardObj[i][k].forbidden = [];
-                    } else 
+                        boardObj[i][k].avail = [];
+                    } else {
                         boardObj[i][k].forbidden = numbers;
+                        boardObj[i][k].avail = this.findAvail(numbers);
+                    }
                 }
             }
         }
         return boardObj;
+    },
+
+    findAvail:  function(forbidden) {
+        let avail = [];
+        let numberStr = '123456789';
+        for (let n of forbidden)
+            numberStr = numberStr.replace(String(n), '');
+        for (let i=0; i<numberStr.length; i++)
+            avail.push(parseInt(numberStr.charAt(i)));
+        return avail;
     },
 
     extractValue:   function(boardObj) {
@@ -92,5 +128,62 @@ module.exports = {
             }
         }
         return board;
+    },
+
+    commonAvailable:    function(orgObj, tmpObj) {
+        for (let rowObj of tmpObj) {
+            let numberStr = '123456789';
+            let blankCells = [];
+            for (let cellObj of rowObj) {
+                if (cellObj.value != 0) {
+                    numberStr = numberStr.replace(String(cellObj.value), '');
+                    blankCells.push(cellObj);
+                }
+            }
+            if (numberStr.length == 0)
+                continue;
+            console.log(blankCells.length, numberStr);
+            for (let i=0; i<numberStr.length; i++) {
+                let number = parseInt(numberStr.charAt(i));
+                let count = 0;
+                for (let cellObj of blankCells) {
+                    for (let anum of cellObj.avail) {
+                        console.log(anum, number);
+                        if (anum == number)
+                            count++;
+                    }
+                }
+                console.log(count);
+                if (count == 1) {
+                    console.log("Found count==1");
+                    for (let cellObj of blankCells) {
+                        for (let anum of cellObj.avail) {
+                            if (anum == number) {
+                                orgObj[cellObj.row][cellObj.col].value = number;
+                                orgObj[cellObj.row][cellObj.col].forbidden = [];
+                                orgObj[cellObj.row][cellObj.col].avail = [];
+                                return true;
+                            }                                
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    },
+
+    setFromAvailable:   function(boardObj) {
+        console.log('Row');
+        if (this.commonAvailable(boardObj, boardObj))
+            return;
+        console.log('Column'); 
+        let transObj = ut.transpose(boardObj);
+        if (this.commonAvailable(boardObj, transObj))
+            return;
+        console.log('Square'); 
+        let squareObj = ut.divide(boardObj);
+        this.printBoardObj(squareObj);
+        if (this.commonAvailable(boardObj, squareObj))
+            return;
     }
 }

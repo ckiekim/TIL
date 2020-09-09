@@ -1,43 +1,30 @@
 module.exports = {
     printArray:     function (arr) {
         let str = '';
-        for (let element of arr)
-            str += element + ' ';
+        let count = 0;
+        for (let element of arr) {
+            str += ' ' + element;
+            if (element == 0)
+                count++;
+        }
         console.log(str)
+        return count;
     },
     printBoard:     function (board) {
+        let count = 0;
         for (let arr of board) 
-            this.printArray(arr);
-        console.log();
+            count += this.printArray(arr);
+        console.log(count);
     },
     
     transpose:      function (board) {
-        // Calculate the width and height of the Array
-        var w = board.length || 0;
-        var h = board[0] instanceof Array ? board[0].length : 0;
-      
-        // In case it is a zero matrix, no transpose routine needed.
-        if(h === 0 || w === 0) { return []; }
-      
-        /**
-         * @var {Number} i Counter
-         * @var {Number} j Counter
-         * @var {Array} t Transposed data is stored in this array.
-         */
-        var i, j, t = [];
-      
-        // Loop through every item in the outer array (height)
-        for(i=0; i<h; i++) {
-            // Insert a new row (array)
+        let t = [];
+        for(let i=0; i<9; i++) {
             t[i] = [];
-    
-            // Loop through every item per item in outer array (width)
-            for(j=0; j<w; j++) {
-                // Save transposed data.
-                t[i][j] = board[j][i];
+            for(let k=0; k<9; k++) {
+                t[i][k] = board[k][i];
             }
         }
-      
         return t;
     },
     
@@ -93,13 +80,13 @@ module.exports = {
     },
 
     findOneNumber:     function(arr) {
-        let numbers = '123456789';
+        let numberStr = '123456789';
         for (let element of arr) {
             if (element != 0) {
-                numbers = numbers.replace(String(element), '');
+                numberStr = numberStr.replace(String(element), '');
             }
         }
-        return parseInt(numbers);
+        return parseInt(numberStr);
     },
 
     fillOne:        function(board, index, kind) {
