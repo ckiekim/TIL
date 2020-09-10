@@ -34,16 +34,6 @@ module.exports = {
         }
         console.log();
     },
-    /* transposeObj:      function (boardObj) {
-        let t = [];
-        for(let i=0; i<9; i++) {
-            t[i] = [];
-            for(let k=0; k<9; k++) {
-                t[i][k] = boardObj[k][i];
-            }
-        }
-        return t;
-    }, */
 
     makeBoardObj:    function(board) {
         let boardObj = [];
@@ -101,7 +91,9 @@ module.exports = {
                         boardObj[i][k].avail = [];
                     } else {
                         boardObj[i][k].forbidden = numbers;
-                        boardObj[i][k].avail = this.findAvail(numbers);
+                        let tmpArr = this.findAvail(numbers);
+                        for (let tmp of tmpArr)
+                            boardObj[i][k].avail.push(tmp);
                     }
                 }
             }
@@ -130,32 +122,36 @@ module.exports = {
         return board;
     },
 
-    commonAvailable:    function(orgObj, tmpObj) {
+    commonAvailable:    function(orgObj, tmpObj, mode) {
         for (let rowObj of tmpObj) {
             let numberStr = '123456789';
             let blankCells = [];
             for (let cellObj of rowObj) {
                 if (cellObj.value != 0) {
                     numberStr = numberStr.replace(String(cellObj.value), '');
+                } else {
                     blankCells.push(cellObj);
+                    if (mode == 0)
+                        console.log(cellObj.row, cellObj.col, ':', cellObj.forbidden, cellObj.avail);
                 }
             }
             if (numberStr.length == 0)
                 continue;
-            console.log(blankCells.length, numberStr);
+            //console.log(blankCells.length, numberStr);
             for (let i=0; i<numberStr.length; i++) {
                 let number = parseInt(numberStr.charAt(i));
                 let count = 0;
                 for (let cellObj of blankCells) {
+                    //console.log(number, cellObj.avail);
                     for (let anum of cellObj.avail) {
-                        console.log(anum, number);
+                        //console.log(anum, number);
                         if (anum == number)
                             count++;
                     }
                 }
-                console.log(count);
+                //console.log(count);
                 if (count == 1) {
-                    console.log("Found count==1");
+                    //console.log("Found count==1,", mode);
                     for (let cellObj of blankCells) {
                         for (let anum of cellObj.avail) {
                             if (anum == number) {
@@ -173,17 +169,17 @@ module.exports = {
     },
 
     setFromAvailable:   function(boardObj) {
-        console.log('Row');
-        if (this.commonAvailable(boardObj, boardObj))
+        //console.log('Row');
+        if (this.commonAvailable(boardObj, boardObj, 1))
             return;
-        console.log('Column'); 
+        //console.log('Column'); 
         let transObj = ut.transpose(boardObj);
-        if (this.commonAvailable(boardObj, transObj))
+        if (this.commonAvailable(boardObj, transObj, 2))
             return;
-        console.log('Square'); 
+        //console.log('Square'); 
         let squareObj = ut.divide(boardObj);
-        this.printBoardObj(squareObj);
-        if (this.commonAvailable(boardObj, squareObj))
+        //this.printAvail(squareObj);
+        if (this.commonAvailable(boardObj, squareObj, 3))
             return;
     }
 }

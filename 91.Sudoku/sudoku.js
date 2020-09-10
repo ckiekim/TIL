@@ -46,10 +46,20 @@ let initialBoard8 = [    // 고급
     [0,5,0,0,0,3,0,9,1], [1,2,0,0,0,0,0,0,6], [9,0,3,0,0,1,8,0,0],
     [0,0,4,8,2,0,0,0,0], [0,0,0,1,3,9,0,0,0], [0,0,0,0,0,5,0,0,0]
 ];
-let initialBoard = [
+let initialBoard9 = [   // 고급
     [2,0,0,0,0,9,0,5,8], [5,0,0,0,0,0,0,6,1], [7,8,0,0,0,6,9,0,0],
     [0,0,0,3,0,0,1,0,0], [0,9,5,0,0,0,0,0,0], [0,0,0,0,4,0,0,0,0],
     [0,0,0,0,0,2,0,0,0], [0,6,1,0,0,5,3,0,0], [0,0,7,9,0,0,0,0,0]
+];
+let initialBoarda = [   // 고급
+    [0,0,5,0,0,0,7,4,0], [0,0,0,5,0,0,0,0,0], [9,3,8,0,0,0,0,0,5],
+    [0,0,6,2,9,0,0,1,0], [7,0,0,0,0,0,0,0,0], [0,0,0,8,0,0,9,0,0],
+    [0,0,0,0,0,4,0,6,0], [0,2,0,0,7,0,0,5,3], [0,0,0,9,8,0,0,0,0]
+];
+let initialBoard = [
+    [0,0,0,0,0,0,0,0,0], [0,0,0,4,3,0,0,0,8], [5,9,0,0,0,0,0,6,1],
+    [0,1,3,0,8,0,0,0,7], [9,0,0,0,0,0,0,0,0], [0,0,6,9,0,4,8,0,0],
+    [6,0,0,0,0,0,0,0,3], [3,2,0,0,0,0,0,9,0], [0,0,0,7,5,0,0,0,0]
 ];
 
 ut.printBoard(initialBoard);
@@ -58,7 +68,7 @@ obj.printBoardObj(boardObj);
 //obj.printForbidden(boardObj);
 
 let count = 0;
-for (count=0; count<1; count++) {
+for (count=0; count<30; count++) {
     let board = obj.extractValue(boardObj);
     if (ut.isSudoku(board))
         break;
@@ -87,7 +97,7 @@ for (count=0; count<1; count++) {
     }
     boardObj = obj.makeBoardObj(board);
     obj.setFromAvailable(boardObj);
-    //obj.printBoardObj(boardObj);
+    obj.printBoardObj(boardObj);
     //obj.printAvail(boardObj);
 }
 console.log(count);
