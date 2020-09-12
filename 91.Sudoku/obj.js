@@ -13,6 +13,7 @@ module.exports = {
             console.log(str);
         }
         console.log(count);
+        return count;
     },
     printForbidden: function(boardObj) {
         for (let rowObj of boardObj) {

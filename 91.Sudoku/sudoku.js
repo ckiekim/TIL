@@ -2,9 +2,9 @@ const ut = require('./util');
 const obj = require('./obj');
 const dt = require('./data');
 
-ut.printBoard(dt.initialBoardH7);
-let boardObj = obj.makeBoardObj(dt.initialBoardH7);
-obj.printBoardObj(boardObj);
+ut.printBoard(dt.initialBoardE4);
+let boardObj = obj.makeBoardObj(dt.initialBoardE4);
+let emptyCell = obj.printBoardObj(boardObj);
 //obj.printForbidden(boardObj);
 
 let count = 0;
@@ -37,7 +37,11 @@ for (count=0; count<30; count++) {
     }
     boardObj = obj.makeBoardObj(board);
     obj.setFromAvailable(boardObj);
-    obj.printBoardObj(boardObj);
+    tmpNo = obj.printBoardObj(boardObj);
+    if (tmpNo == emptyCell)
+        break;
+    else
+        emptyCell = tmpNo;
     //obj.printAvail(boardObj);
 }
 console.log(count);
