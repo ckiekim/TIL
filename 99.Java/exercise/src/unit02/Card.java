@@ -1,5 +1,4 @@
-package exercise;
-
+package unit02;
 import java.util.Objects;
 
 public class Card {
@@ -57,5 +56,4 @@ public class Card {
 		Card other = (Card) obj;
 		return Objects.equals(expDate, other.expDate) && number == other.number;
 	}
-
 }
