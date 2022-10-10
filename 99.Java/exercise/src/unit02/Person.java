@@ -1,9 +1,8 @@
 package unit02;
 
-import java.util.Comparator;
 import java.util.Objects;
 
-public class Person implements Comparable {
+public class Person implements Comparable<Object> {
 	String name;
 	int age;
 	
