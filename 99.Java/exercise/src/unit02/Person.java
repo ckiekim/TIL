@@ -1,8 +1,10 @@
 package unit02;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Person implements Comparable<Object> {
+public class Person implements Comparable<Object>, Serializable {
+	private static final long serialVersionUID = 1L;
 	String name;
 	int age;
 	
