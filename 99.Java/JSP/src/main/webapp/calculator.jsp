@@ -16,7 +16,8 @@
     <form action="/calculator" method="post">
         <table>
             <tr>
-                <td class="result" colspan="4">${eval}</td>
+                <!-- <td class="result" colspan="4"><%= request.getAttribute("eval") %></td> -->
+                <td class="result" colspan="4">${eval}</td>			<!-- Expression Language(EL) -->
             </tr>
             <tr>
                 <td><button type="submit" name="op" value="C">BS</button></td>
