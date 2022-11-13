@@ -42,6 +42,11 @@ public class EmployeeMain {
         hs.add(new Employee(153, "정마이", Position.사원, LocalDate.of(2008, 1, 1)));
         
         hs.forEach(s -> System.out.println(s));
+        System.out.println();
+        
+        // HashSet을 입사일자 기준으로 정렬
+        hs.stream().sorted((o1,o2)->o1.getJoinDate().compareTo(o2.getJoinDate()))
+                .forEach(s -> System.out.println(s));
     }
 
 }
