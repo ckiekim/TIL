@@ -30,6 +30,11 @@
   	<filter-name>charEncFilter</filter-name>
   	<url-pattern>/*</url-pattern>
   </filter-mapping> -->
+  
+  <context-param>
+    <param-name>tempfile.dir</param-name>
+    <param-value>c:/temp</param-value>
+  </context-param>
 
   <display-name>JSP</display-name>
   <description>
