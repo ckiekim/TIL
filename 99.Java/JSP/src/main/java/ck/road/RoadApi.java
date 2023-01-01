@@ -17,7 +17,7 @@ public class RoadApi {
         int countPerPage = 10;
         String resultType = "json";
         String confmKey = "U01TX0FVVEgyMDIwMTExOTEwMjMzNTExMDQzNzg=";
-        String keyword = URLEncoder.encode("광진구청", "utf-8");
+        String keyword = URLEncoder.encode("서울특별시청", "utf-8");
         String apiUrl = "https://business.juso.go.kr/addrlink/addrLinkApi.do?currentPage="
                         + currentPage + "&countPerPage=" + countPerPage + "&keyword=" + keyword
                         + "&confmKey=" + confmKey + "&resultType=" + resultType;
