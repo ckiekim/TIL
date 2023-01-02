@@ -31,7 +31,7 @@ public class ObjectDetect {
         String secretKey = props.getProperty("secretKey");
         StringBuffer sb = new StringBuffer();
         String baseUrl = "https://naveropenapi.apigw.ntruss.com/vision-obj/v1/detect";
-        File uploadFile = new File("c:/Temp/yolo-test.jpg");
+        File uploadFile = new File("c:/Temp/yolo-test2.jpg");
         
         URL url = new URL(baseUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
