@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Road API</title>
+	<script src="key.js"></script>
+	<script>
+		window.onload = () => {
+			let base_url = 'https://www.juso.go.kr/addrlink/addrLinkApi.do';
+			let params1 = `confmKey=${roadAddrKey}&currentPage=1&countPerPage=10`;
+			let params2 = `keyword=${encodeURIComponent('경기도청')}&resultType=json`;
+			let url = `${base_url}?${params1}&${params2}`;
+			fetch(url)
+				.then(response => response.json())
+				.then(result => {
+					console.log(result.results.juso[0].roadAddr);
+					document.getElementById('roadAddr').innerHTML = result.results.juso[0].roadAddr;
+				});
+		}
+	</script>
+</head>
+<body style="margin: 40px;">
+	<h1>경기도청: <span id="roadAddr"></span></h1>
+</body>
+</html>
