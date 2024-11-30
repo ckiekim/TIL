@@ -1,0 +1,136 @@
+# **실습과제 1: 의사결정나무 분석**
+
+---
+
+## **1. 데이터 탐색**
+
+### **1.1 데이터 로드**
+- 제공된 데이터 파일: `house_price_prediction.csv`
+- 데이터는 `read.csv`를 통해 불러왔습니다.
+
+```R
+library(dplyr)
+df <- read.csv(file = "data/house_price_prediction.csv", header = TRUE, sep = ",")
+```
+
+### **1.2 데이터 탐색**
+- 데이터 구조 확인: `str()`
+- 데이터프레임 크기 확인: `dim()`
+- 컬럼 이름: `colnames()`
+- 요약 통계: `summary()`
+- 결측값 확인: `sum(is.na(df))`
+
+#### **결과 요약**
+- **데이터 크기**: `nrow = 4553`, `ncol = 12`
+- **결측값**: 결측값 없음.
+
+---
+
+## **2. Price 열을 기준으로 범주형 변수 생성**
+
+### **2.1 범주화**
+- `price`가 500,000 이하이면 `L`, 초과이면 `H`로 구분.
+- 결과는 `price_cat` 열에 저장되며, `price` 열은 제거.
+
+```R
+df <- df %>%
+    mutate(price_cat = factor(ifelse(price <= 500000, 'L', 'H'))) %>%
+    select(-price)
+```
+
+#### **결과 요약**
+- `price_cat`의 두 가지 수준: `L`, `H`.
+
+---
+
+## **3. 데이터셋 분할**
+
+### **3.1 Train/Test Split**
+- `train:test = 3:1` 비율로 무작위 분리.
+- `set.seed(2024)`로 시드 고정.
+- Train: 75%, Test: 25%.
+
+```R
+set.seed(2024)
+n <- nrow(df)
+train_indices <- sample(seq_len(n), size = round(0.75 * n))
+train <- df[train_indices, ]
+test <- df[-train_indices, ]
+```
+
+#### **결과 요약**
+- Train 데이터: 3415개
+- Test 데이터: 1138개
+
+---
+
+## **4. C50 분류 트리 생성**
+
+### **4.1 모델 생성**
+- 의사결정나무 모델 생성: `C5.0()`
+- 종속변수: `price_cat`, 독립변수: 나머지 모든 변수.
+
+```R
+library(C50)
+c50_model <- C5.0(price_cat ~ ., data = train)
+```
+
+### **4.2 모델 요약 및 시각화**
+- **summary(c50_model)** 로 트리 요약 확인.
+- **plot(c50_model)** 로 트리 시각화 (RStudio 필요).
+
+---
+
+## **5. 모델 평가**
+
+### **5.1 Test 데이터 예측**
+```R
+predictions <- predict(c50_model, newdata = test)
+```
+
+### **5.2 혼동 행렬(Confusion Matrix) 및 정확도 계산**
+```R
+confusion_matrix <- table(test$price_cat, predictions)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+cat("Accuracy:", accuracy, "\n")
+```
+
+#### **결과**
+- **혼동 행렬**:
+  ```
+        predictions
+        H    L
+    H  366  125
+    L  123  524
+  ```
+- **정확도**: `0.7829525` (78.3%).
+
+---
+
+## **6. Boosting 적용 및 성능 향상**
+
+### **6.1 Boosting 모델 생성 및 평가**
+- `trials` 값을 1부터 30까지 증가시키며 Boosting 적용.
+
+```R
+for (count in 1:30) {
+    boosted_model <- C5.0(price_cat ~ ., data = train, trials = count)
+    predictions <- predict(boosted_model, newdata = test)
+    confusion_matrix <- table(test$price_cat, predictions)
+    accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+    cat("Trials의 갯수:", count, "--> Accuracy with Boosting:", accuracy, "\n")
+}
+```
+
+#### **결과**
+- **Trials = 11** 일 때 최고 정확도 `0.8119508`을 기록.
+- **Trials > 11** 에서는 과적합으로 인해 정확도가 떨어짐.
+
+---
+
+## **결론**
+
+1. 기본 C50 의사결정나무 모델의 정확도는 `0.812`로 나타남.
+2. Boosting을 통해 성능이 향상되었으며, **Trials = 11**에서 정확도가 최고(`0.812`)를 기록.
+3. Boosting 단계가 많아질수록 과적합 위험이 있으므로 적정 단계 수를 선택하는 것이 중요함.
+
